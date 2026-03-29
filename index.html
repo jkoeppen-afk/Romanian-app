@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Romanian"/>
+<meta name="theme-color" content="#002B7F"/>
+<title>🇷🇴 Romanian Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --blue: #002B7F;
+  --blue-mid: #1a4aaa;
+  --blue-light: #dde6ff;
+  --blue-pale: #f0f4ff;
+  --gold: #FCD116;
+  --gold-dark: #a87d00;
+  --gold-mid: #e8c000;
+  --gold-light: #fffbe6;
+  --red: #CE1126;
+  --red-dark: #9e0d1e;
+  --red-light: #fff0f2;
+  --text: #0d1117;
+  --text2: #455060;
+  --text3: #8a97a8;
+  --border: rgba(0,43,127,0.1);
+  --border2: rgba(0,43,127,0.18);
+  --bg: #f0f3fb;
+  --surface: #ffffff;
+  --surface2: #e8edf8;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --safe-top: env(safe-area-inset-top);
+  --safe-bottom: env(safe-area-inset-bottom);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #f0f2f8;
+    --text2: #9aaac0;
+    --text3: #566070;
+    --border: rgba(252,209,22,0.1);
+    --border2: rgba(252,209,22,0.2);
+    --bg: #080c18;
+    --surface: #111828;
+    --surface2: #192038;
+    --blue-light: #0d1a3a;
+    --blue-pale: #0a1028;
+    --gold-light: #1a1400;
+    --red-light: #1a0508;
+  }
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Outfit', -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.header {
+  background: var(--blue);
+  padding: calc(var(--safe-top) + 10px) 16px 0;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.header-stripe { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; display: flex; }
+.header-stripe div { flex: 1; }
+.header-inner { display: flex; align-items: center; justify-content: space-between; padding-bottom: 10px; }
+.header-title { font-size: 18px; font-weight: 900; color: #fff; letter-spacing: -0.3px; line-height: 1; }
+.header-title span { color: var(--gold); }
+.header-sub { font-size: 11px; color: rgba(255,255,255,0.5); margin-top: 2px; font-weight: 500; }
+.header-flag { font-size: 24px; }
+
+.nav {
+  background: var(--blue);
+  display: flex; flex-shrink: 0;
+  overflow-x: auto; scrollbar-width: none;
+  padding: 0 6px; gap: 2px;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-tab {
+  padding: 10px 14px 12px;
+  font-size: 13px; font-weight: 700;
+  color: rgba(255,255,255,0.45);
+  cursor: pointer; white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: all 0.15s; flex-shrink: 0;
+  font-family: 'Outfit', sans-serif;
+}
+.nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+.nav-tab.red-tab.active { color: #ff8096; border-bottom-color: #ff8096; }
+
+.screen { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+.screen.active { display: flex; }
+.scroll-area { flex: 1; overflow-y: auto; padding: 12px; padding-bottom: calc(var(--safe-bottom) + 80px); }
+
+.search-wrap { padding: 10px 12px 4px; flex-shrink: 0; }
+.search-input {
+  width: 100%; padding: 11px 14px;
+  border: 1.5px solid var(--border2); border-radius: 12px;
+  font-size: 15px; background: var(--surface); color: var(--text);
+  outline: none; font-family: 'Outfit', sans-serif; font-weight: 500;
+  transition: border-color 0.15s;
+}
+.search-input:focus { border-color: var(--blue-mid); }
+@media (prefers-color-scheme: dark) { .search-input:focus { border-color: var(--gold); } }
+
+.cat-pills {
+  display: flex; gap: 6px; padding: 8px 12px;
+  overflow-x: auto; scrollbar-width: none; flex-shrink: 0;
+}
+.cat-pills::-webkit-scrollbar { display: none; }
+.cat-pill {
+  padding: 5px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border2);
+  font-size: 12px; font-weight: 700;
+  cursor: pointer; background: var(--surface);
+  color: var(--text2); white-space: nowrap;
+  transition: all 0.15s; flex-shrink: 0;
+  font-family: 'Outfit', sans-serif;
+}
+.cat-pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.cat-pill.slang-pill.active { background: var(--red); border-color: var(--red); color: #fff; }
+
+.phrase-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px; margin-bottom: 10px;
+  transition: transform 0.1s;
+  animation: fadeUp 0.18s ease both;
+}
+.phrase-card:active { transform: scale(0.98); }
+.phrase-card.slang-card { border-left: 4px solid var(--red); }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.card-text { flex: 1; }
+.ro-text { font-size: 19px; font-weight: 800; color: var(--blue); margin-bottom: 2px; letter-spacing: -0.3px; }
+@media (prefers-color-scheme: dark) { .ro-text { color: var(--gold); } }
+.en-text { font-size: 13px; color: var(--text2); margin-bottom: 5px; font-weight: 500; }
+.ph-text { font-size: 12px; color: var(--gold-dark); font-style: italic; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .ph-text { color: #f0c040; } }
+.slang-badge {
+  display: inline-block; background: var(--red);
+  color: #fff; font-size: 9px; font-weight: 800;
+  padding: 2px 7px; border-radius: 6px;
+  letter-spacing: 0.5px; margin-bottom: 5px; text-transform: uppercase;
+}
+.card-actions { display: flex; gap: 8px; margin-top: 10px; }
+.audio-btn {
+  padding: 6px 14px;
+  border: 1.5px solid var(--border2); border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+  background: var(--blue-pale); color: var(--blue);
+  cursor: pointer; font-family: 'Outfit', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  .audio-btn { background: var(--surface2); color: var(--gold); border-color: var(--border2); }
+}
+.fav-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid var(--border2);
+  background: var(--surface2); cursor: pointer;
+  font-size: 17px; display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; flex-shrink: 0; color: var(--text3);
+}
+.fav-btn.active { background: var(--red-light); border-color: var(--red); color: var(--red); }
+.fav-btn:active { transform: scale(1.25); }
+
+.empty-state { text-align: center; padding: 48px 24px; color: var(--text3); font-size: 14px; line-height: 1.8; }
+.empty-icon { font-size: 40px; margin-bottom: 12px; }
+
+.ai-wrap {
+  padding: 0 12px calc(var(--safe-bottom) + 8px);
+  flex-shrink: 0; border-top: 3px solid var(--gold);
+  background: var(--surface);
+}
+.ai-toggle {
+  width: 100%; padding: 9px 0; display: flex; align-items: center;
+  justify-content: space-between; background: none; border: none;
+  cursor: pointer; font-family: 'Outfit', sans-serif;
+}
+.ai-toggle-label {
+  font-size: 10px; color: var(--blue); letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 800;
+}
+@media (prefers-color-scheme: dark) { .ai-toggle-label { color: var(--gold); } }
+.ai-toggle-arrow {
+  font-size: 12px; color: var(--text3);
+  transition: transform 0.2s; display: inline-block;
+}
+.ai-toggle-arrow.open { transform: rotate(180deg); }
+.ai-body { display: none; padding-bottom: 8px; }
+.ai-body.open { display: block; }
+.ai-row { display: flex; gap: 8px; }
+.ai-row input {
+  flex: 1; padding: 11px 14px;
+  border: 1.5px solid var(--border2); border-radius: 12px;
+  font-size: 15px; background: var(--bg); color: var(--text);
+  outline: none; font-family: 'Outfit', sans-serif; font-weight: 500;
+}
+.ai-row input:focus { border-color: var(--blue-mid); }
+.ai-ask-btn {
+  padding: 11px 18px; border-radius: 12px;
+  border: none; background: var(--blue); color: #fff;
+  font-size: 14px; font-weight: 800; cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+}
+.ai-ask-btn:active { background: var(--blue-mid); }
+.ai-ask-btn:disabled { opacity: 0.5; }
+.ai-result {
+  margin-top: 10px; background: var(--blue-pale);
+  border: 1.5px solid var(--blue-light);
+  border-radius: var(--radius); padding: 14px 16px; display: none;
+  max-height: 280px; overflow-y: auto;
+}
+@media (prefers-color-scheme: dark) { .ai-result { background: var(--surface2); border-color: var(--border2); } }
+.ai-result .ro-big { font-size: 22px; font-weight: 900; color: var(--blue); margin-bottom: 3px; letter-spacing: -0.3px; }
+@media (prefers-color-scheme: dark) { .ai-result .ro-big { color: var(--gold); } }
+.ai-result .ai-ph { font-size: 13px; color: var(--gold-dark); font-style: italic; margin-bottom: 6px; font-weight: 600; }
+@media (prefers-color-scheme: dark) { .ai-result .ai-ph { color: #f0c040; } }
+.ai-result .ai-en { font-size: 14px; color: var(--text); margin-bottom: 6px; font-weight: 500; }
+.ai-result .ai-ex { font-size: 13px; color: var(--text2); }
+.ai-result .ai-tip { font-size: 12px; color: var(--blue-mid); margin-top: 8px; font-style: italic; font-weight: 600; }
+.spinner {
+  display: inline-block; width: 20px; height: 20px;
+  border: 2.5px solid var(--border2); border-top-color: var(--blue);
+  border-radius: 50%; animation: spin 0.7s linear infinite;
+}
+@media (prefers-color-scheme: dark) { .spinner { border-top-color: var(--gold); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.context-hero {
+  background: var(--blue); border-radius: var(--radius);
+  padding: 22px 20px; color: #fff; margin-bottom: 14px;
+  position: relative; overflow: hidden;
+}
+.context-hero::after {
+  content: '🇷🇴'; position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%); font-size: 52px; opacity: 0.25;
+}
+.context-hero h2 { font-size: 21px; font-weight: 900; margin-bottom: 5px; letter-spacing: -0.3px; }
+.context-hero h2 span { color: var(--gold); }
+.context-hero p { font-size: 13px; opacity: 0.7; line-height: 1.5; font-weight: 400; max-width: 230px; }
+.quick-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 12px; }
+.quick-chip {
+  padding: 7px 14px; border-radius: 20px;
+  border: 1.5px solid var(--border2); font-size: 12px; font-weight: 700;
+  cursor: pointer; background: var(--surface); color: var(--text2);
+  transition: all 0.15s; font-family: 'Outfit', sans-serif;
+}
+.quick-chip.selected { background: var(--gold-light); border-color: var(--gold-mid); color: var(--gold-dark); }
+.context-input {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid var(--border2); border-radius: 12px;
+  font-size: 15px; background: var(--surface); color: var(--text);
+  outline: none; margin-bottom: 10px;
+  font-family: 'Outfit', sans-serif; font-weight: 500;
+}
+.context-input:focus { border-color: var(--blue-mid); }
+.context-go-btn {
+  width: 100%; padding: 14px; border-radius: 12px;
+  border: none; background: var(--gold); color: var(--blue);
+  font-size: 16px; font-weight: 900; cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+}
+.context-go-btn:active { background: var(--gold-mid); }
+.context-go-btn:disabled { opacity: 0.6; }
+.context-result-label {
+  font-size: 11px; color: var(--text3); letter-spacing: 0.08em;
+  text-transform: uppercase; margin: 14px 0 10px; font-weight: 700;
+}
+
+.quiz-wrap { padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+.quiz-header { display: flex; justify-content: space-between; align-items: center; }
+.quiz-score-pill {
+  background: var(--blue); color: #fff;
+  padding: 5px 14px; border-radius: 20px;
+  font-size: 13px; font-weight: 800;
+}
+.quiz-counter { font-size: 13px; color: var(--text3); font-weight: 600; }
+.quiz-progress { height: 6px; background: var(--border2); border-radius: 3px; overflow: hidden; }
+.quiz-bar { height: 100%; background: var(--gold); border-radius: 3px; transition: width 0.4s ease; }
+.quiz-mode-btns { display: flex; gap: 8px; }
+.quiz-mode-btn {
+  flex: 1; padding: 9px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border2);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  background: var(--surface); color: var(--text2);
+  font-family: 'Outfit', sans-serif; transition: all 0.15s;
+}
+.quiz-mode-btn.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+.quiz-card {
+  background: var(--blue); border-radius: var(--radius);
+  padding: 30px 20px; text-align: center;
+  min-height: 155px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+  position: relative; overflow: hidden;
+}
+.quiz-card::before {
+  content: ''; position: absolute; top: -30px; right: -30px;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: rgba(252,209,22,0.1);
+}
+.quiz-card::after {
+  content: ''; position: absolute; bottom: -20px; left: -20px;
+  width: 80px; height: 80px; border-radius: 50%;
+  background: rgba(206,17,38,0.15);
+}
+.quiz-q { font-size: 28px; font-weight: 900; color: #fff; letter-spacing: -0.5px; line-height: 1.2; position: relative; z-index: 1; }
+.quiz-ph { font-size: 13px; color: var(--gold); font-style: italic; font-weight: 600; position: relative; z-index: 1; }
+.quiz-hint { font-size: 12px; color: rgba(255,255,255,0.45); font-weight: 500; position: relative; z-index: 1; }
+.quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quiz-opt {
+  padding: 14px 10px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border2); font-size: 14px; font-weight: 700;
+  cursor: pointer; background: var(--surface); color: var(--text);
+  text-align: center; line-height: 1.3;
+  transition: all 0.12s; font-family: 'Outfit', sans-serif;
+}
+.quiz-opt:active { transform: scale(0.97); }
+.quiz-opt.correct { background: #edfaf3; border-color: #22c55e; color: #15803d; }
+.quiz-opt.wrong { background: var(--red-light); border-color: var(--red); color: var(--red-dark); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-feedback { text-align: center; font-size: 15px; font-weight: 800; min-height: 24px; }
+.quiz-next-btn {
+  padding: 14px; border-radius: var(--radius-sm);
+  border: none; background: var(--gold); color: var(--blue);
+  font-size: 15px; font-weight: 900; cursor: pointer;
+  font-family: 'Outfit', sans-serif; display: none;
+}
+.quiz-done {
+  text-align: center; padding: 32px 20px;
+  background: var(--blue); border-radius: var(--radius);
+}
+.score-big { font-size: 60px; font-weight: 900; color: var(--gold); line-height: 1; }
+.score-label { font-size: 15px; color: rgba(255,255,255,0.7); margin-top: 8px; }
+.score-sub { font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 4px; }
+.quiz-restart-btn {
+  margin-top: 18px; padding: 13px 28px;
+  border-radius: var(--radius-sm); border: none;
+  background: var(--gold); color: var(--blue);
+  font-size: 15px; font-weight: 900; cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+}
+
+.api-screen {
+  position: fixed; inset: 0; background: var(--blue);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 32px 24px; z-index: 999;
+}
+.api-screen.hidden { display: none; }
+.api-logo { font-size: 52px; margin-bottom: 16px; }
+.api-title { font-size: 24px; font-weight: 900; color: #fff; margin-bottom: 6px; letter-spacing: -0.4px; }
+.api-title span { color: var(--gold); }
+.api-sub { font-size: 14px; color: rgba(255,255,255,0.6); text-align: center; line-height: 1.6; margin-bottom: 28px; max-width: 300px; }
+.api-input-wrap { width: 100%; margin-bottom: 12px; }
+.api-key-input {
+  width: 100%; padding: 13px 14px;
+  border: 2px solid rgba(252,209,22,0.4); border-radius: 12px;
+  font-size: 14px; background: rgba(255,255,255,0.08);
+  color: #fff; outline: none;
+  font-family: 'Outfit', sans-serif; font-weight: 500;
+  letter-spacing: 0.5px;
+}
+.api-key-input::placeholder { color: rgba(255,255,255,0.3); }
+.api-key-input:focus { border-color: var(--gold); }
+.api-save-btn {
+  width: 100%; padding: 14px; border-radius: 12px;
+  border: none; background: var(--gold); color: var(--blue);
+  font-size: 16px; font-weight: 900; cursor: pointer;
+  font-family: 'Outfit', sans-serif; margin-bottom: 16px;
+}
+.api-help { font-size: 12px; color: rgba(255,255,255,0.4); text-align: center; line-height: 1.6; }
+.api-help a { color: var(--gold); text-decoration: none; }
+.api-error { font-size: 13px; color: #ff8096; margin-bottom: 10px; text-align: center; min-height: 18px; }
+.settings-btn {
+  position: absolute; top: calc(var(--safe-top) + 8px); right: 12px;
+  background: none; border: none; font-size: 18px; cursor: pointer;
+  color: rgba(255,255,255,0.5); padding: 6px;
+}
+.settings-btn:active { color: var(--gold); }
+  padding: 10px 16px; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; flex-shrink: 0;
+}
+.install-close {
+  background: none; border: none; color: var(--blue);
+  font-size: 18px; cursor: pointer; font-weight: 900; padding: 0 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- API KEY SETUP -->
+<div class="api-screen hidden" id="apiScreen">
+  <div class="api-logo">🇷🇴</div>
+  <div class="api-title">Hai, <span>vorbim!</span></div>
+  <div class="api-sub">To use AI Lookup and Before You Go, enter your Anthropic API key. It saves to your phone and is never shared.</div>
+  <div class="api-input-wrap">
+    <input class="api-key-input" id="apiKeyInput" type="password" placeholder="sk-ant-..." />
+  </div>
+  <div class="api-error" id="apiError"></div>
+  <button class="api-save-btn" onclick="saveApiKey()">Save & Continue →</button>
+  <div class="api-help">
+    Get your key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a><br/>
+    Settings → API Keys → Create Key
+  </div>
+</div>
+
+<div class="install-banner" id="installBanner">
+  <span>📱 Tap Share → "Add to Home Screen" for quick access</span>
+  <button class="install-close" onclick="document.getElementById('installBanner').style.display='none'">✕</button>
+</div>
+
+<div class="header">
+  <div class="header-inner">
+    <div>
+      <div class="header-title">Hai, <span>vorbim!</span></div>
+      <div class="header-sub">Let's talk! · Romanian Companion</div>
+    </div>
+    <div class="header-flag">🇷🇴</div>
+    <button class="settings-btn" onclick="showApiScreen()" title="API Key Settings">⚙️</button>
+  </div>
+  <div class="header-stripe">
+    <div style="background:#002B7F"></div>
+    <div style="background:#FCD116"></div>
+    <div style="background:#CE1126"></div>
+  </div>
+</div>
+
+<div class="nav">
+  <div class="nav-tab active" data-screen="phrasebook">📖 Phrases</div>
+  <div class="nav-tab" data-screen="context">🎯 Before You Go</div>
+  <div class="nav-tab" data-screen="quiz">🧠 Quiz</div>
+  <div class="nav-tab red-tab" data-screen="favorites">♥ Saved <span id="favNavCount"></span></div>
+</div>
+
+<!-- PHRASEBOOK -->
+<div class="screen active" id="screen-phrasebook">
+  <div class="search-wrap">
+    <input class="search-input" id="search" type="text" placeholder="🔍  Search phrases..." oninput="renderPhrases()"/>
+  </div>
+  <div class="cat-pills" id="catPills"></div>
+  <div class="scroll-area" id="phraseList"></div>
+  <div class="ai-wrap">
+    <button class="ai-toggle" onclick="toggleAI()">
+      <span class="ai-toggle-label">⚡ AI Lookup — ask anything</span>
+      <span class="ai-toggle-arrow" id="aiArrow">▲</span>
+    </button>
+    <div class="ai-body" id="aiBody">
+      <div class="ai-row">
+        <input type="text" id="aiInput" placeholder='e.g. "How do I say no way?"' onkeydown="if(event.key==='Enter')askAI()"/>
+        <button class="ai-ask-btn" id="aiBtn" onclick="askAI()">Ask</button>
+      </div>
+      <div class="ai-result" id="aiResult"></div>
+    </div>
+  </div>
+</div>
+
+<!-- BEFORE YOU GO -->
+<div class="screen" id="screen-context">
+  <div class="scroll-area">
+    <div style="padding:4px">
+      <div class="context-hero">
+        <h2>Where are you<br><span>headed?</span></h2>
+        <p>Tell me the situation — I'll pull the best phrases for right now.</p>
+      </div>
+      <div class="quick-chips" id="quickChips"></div>
+      <input class="context-input" id="contextInput" type="text" placeholder="Or describe it... e.g. birthday cookout" onkeydown="if(event.key==='Enter')runContext()"/>
+      <button class="context-go-btn" id="contextBtn" onclick="runContext()">Get my phrases →</button>
+      <div id="contextResult"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="screen" id="screen-quiz">
+  <div class="scroll-area">
+    <div class="quiz-wrap" id="quizWrap"></div>
+  </div>
+</div>
+
+<!-- FAVORITES -->
+<div class="screen" id="screen-favorites">
+  <div class="search-wrap">
+    <input class="search-input" id="favSearch" type="text" placeholder="🔍  Search saved..." oninput="renderFavorites()"/>
+  </div>
+  <div class="scroll-area" id="favList"></div>
+</div>
+
+<script>
+const PHRASES = {
+  "Greetings": [
+    {ro:"Bună ziua",en:"Good day / Hello",ph:"BOO-nuh ZEE-wah"},
+    {ro:"Bună dimineața",en:"Good morning",ph:"BOO-nuh dee-mee-NYAH-tsah"},
+    {ro:"Bună seara",en:"Good evening",ph:"BOO-nuh SYAH-rah"},
+    {ro:"Salut",en:"Hi / Hey (casual)",ph:"sah-LOOT"},
+    {ro:"Ce mai faci?",en:"How are you?",ph:"cheh my FAH-ch"},
+    {ro:"Bine, mulțumesc",en:"Fine, thank you",ph:"BEE-neh, mool-tsoo-MESK"},
+    {ro:"La revedere",en:"Goodbye",ph:"lah reh-veh-DEH-reh"},
+    {ro:"Pa!",en:"Bye! (casual)",ph:"pah"},
+    {ro:"Mă numesc Jake",en:"My name is Jake",ph:"muh noo-MESK Jake"},
+    {ro:"Îmi pare bine",en:"Nice to meet you",ph:"eem PAH-reh BEE-neh"},
+  ],
+  "Food & Drink": [
+    {ro:"Noroc!",en:"Cheers!",ph:"noh-ROK"},
+    {ro:"Poftă bună!",en:"Enjoy your meal!",ph:"POF-tuh BOO-nuh"},
+    {ro:"Un pahar de vin, vă rog",en:"A glass of wine, please",ph:"oon pah-HAR deh veen, vuh ROG"},
+    {ro:"O bere, vă rog",en:"A beer, please",ph:"oh BEH-reh, vuh ROG"},
+    {ro:"Este delicios",en:"It's delicious",ph:"YES-teh deh-lee-CHOS"},
+    {ro:"Mulțumesc",en:"Thank you",ph:"mool-tsoo-MESK"},
+    {ro:"Vă rog",en:"Please",ph:"vuh ROG"},
+    {ro:"Nota de plată",en:"The bill / check",ph:"NOH-tah deh PLAH-tuh"},
+    {ro:"Apă, vă rog",en:"Water, please",ph:"AH-puh, vuh ROG"},
+    {ro:"Fără...",en:"Without... (allergy/preference)",ph:"FUH-ruh"},
+    {ro:"Să bem!",en:"Let's drink!",ph:"suh bem"},
+    {ro:"Mai bei ceva?",en:"Want another drink?",ph:"my bay CHEH-vah"},
+  ],
+  "Social": [
+    {ro:"La mulți ani!",en:"Happy birthday / Congratulations!",ph:"lah MOOL-ts ahn"},
+    {ro:"Sănătate!",en:"To your health! (toast)",ph:"suh-nuh-TAH-teh"},
+    {ro:"Distracție plăcută",en:"Have fun!",ph:"dees-TRAK-tsee-eh pluh-KOO-tuh"},
+    {ro:"Ești din România?",en:"Are you from Romania?",ph:"yesht deen ro-mah-NEE-ah"},
+    {ro:"Nu înțeleg",en:"I don't understand",ph:"noo een-TSEH-leg"},
+    {ro:"Vorbiți engleza?",en:"Do you speak English?",ph:"vor-BEETS eng-LEH-zah"},
+    {ro:"Poți repeta?",en:"Can you repeat that?",ph:"pots reh-peh-TAH"},
+    {ro:"Îmi pare rău",en:"I'm sorry",ph:"eem PAH-reh ruh-OO"},
+    {ro:"Încerc să învăț româna",en:"I'm trying to learn Romanian",ph:"een-CHERK suh een-VUHT ro-MUH-nah"},
+    {ro:"Mă bucur să te cunosc",en:"Happy to know you",ph:"muh boo-KOOR suh teh koo-NOSK"},
+    {ro:"La chef!",en:"To the party! (toast)",ph:"lah kef"},
+  ],
+  "Family": [
+    {ro:"Familie",en:"Family",ph:"fah-MEE-lee-eh"},
+    {ro:"Mamă",en:"Mom",ph:"MAH-muh"},
+    {ro:"Tată",en:"Dad",ph:"TAH-tuh"},
+    {ro:"Frate",en:"Brother",ph:"FRAH-teh"},
+    {ro:"Soră",en:"Sister",ph:"SOH-ruh"},
+    {ro:"Bunică",en:"Grandmother",ph:"boo-NEE-kuh"},
+    {ro:"Bunic",en:"Grandfather",ph:"boo-NEEK"},
+    {ro:"Copil",en:"Child",ph:"koh-PEEL"},
+    {ro:"Prieten / Prietenă",en:"Friend (m/f)",ph:"pree-EH-ten / pree-EH-teh-nuh"},
+    {ro:"Ai o familie frumoasă",en:"You have a beautiful family",ph:"eye oh fah-MEE-lee-eh froo-MWAH-suh"},
+  ],
+  "Slang 🔥": [
+    {ro:"Mișto!",en:"Cool! / Awesome!",ph:"MEESH-toh",slang:true},
+    {ro:"Tare!",en:"Great! / Sick! (literally 'strong')",ph:"TAH-reh",slang:true},
+    {ro:"Super",en:"Super / Great (used constantly)",ph:"SOO-per",slang:true},
+    {ro:"Hai",en:"Come on / Let's go / OK (super versatile)",ph:"hy",slang:true},
+    {ro:"Ce faci, bă?",en:"What's up, man? (very casual)",ph:"cheh FAH-ch buh",slang:true},
+    {ro:"Ești tare",en:"You're awesome",ph:"yesht TAH-reh",slang:true},
+    {ro:"E super fain",en:"It's really cool/nice ('fain' is very Romanian)",ph:"yeh SOO-per fayn",slang:true},
+    {ro:"Serios?",en:"Seriously? / No way?",ph:"seh-REE-os",slang:true},
+    {ro:"Nu se poate!",en:"No way! / Can't be!",ph:"noo seh PWAH-teh",slang:true},
+    {ro:"Doamne!",en:"Oh my God! / Lord!",ph:"DWAHM-neh",slang:true},
+    {ro:"Lasă-mă!",en:"Get out of here! (playful disbelief)",ph:"LAH-suh muh",slang:true},
+    {ro:"N-am idee",en:"No idea / I don't know",ph:"nam ee-DEH-eh",slang:true},
+    {ro:"Merge",en:"It works / It's fine / OK (common filler)",ph:"MER-jeh",slang:true},
+    {ro:"Stai puțin",en:"Hold on a sec",ph:"sty poo-TSEEN",slang:true},
+  ]
+};
+
+const QUICK_SCENARIOS = ["Family dinner","Birthday party","Meeting friends","At a restaurant","Small talk","Toasting / drinks","Cookout","Meeting the family"];
+const CATEGORIES = Object.keys(PHRASES);
+const ALL_PHRASES = CATEGORIES.flatMap(c => PHRASES[c]);
+
+let activeCat = "All";
+let favorites = [];
+try { favorites = JSON.parse(localStorage.getItem("ro_favs") || "[]"); } catch(e) {}
+let quizMode = "ro-to-en";
+let quizPool = [], quizIndex = 0, quizScore = 0;
+
+function saveFavs() { try { localStorage.setItem("ro_favs", JSON.stringify(favorites)); } catch(e) {} }
+function isFav(ro) { return favorites.some(f => f.ro === ro); }
+function toggleFav(p) {
+  if (isFav(p.ro)) favorites = favorites.filter(f => f.ro !== p.ro);
+  else favorites.push(p);
+  saveFavs(); updateFavBadge(); renderPhrases(); renderFavorites();
+}
+function updateFavBadge() {
+  const el = document.getElementById("favNavCount");
+  el.innerHTML = favorites.length > 0
+    ? `<span style="background:var(--red);color:#fff;border-radius:10px;font-size:9px;padding:2px 6px;margin-left:2px;font-weight:800">${favorites.length}</span>` : "";
+}
+
+document.querySelectorAll(".nav-tab").forEach(t => {
+  t.addEventListener("click", () => {
+    document.querySelectorAll(".nav-tab").forEach(x => x.classList.remove("active"));
+    document.querySelectorAll(".screen").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    document.getElementById("screen-" + t.dataset.screen).classList.add("active");
+    if (t.dataset.screen === "quiz") initQuiz();
+    if (t.dataset.screen === "favorites") renderFavorites();
+  });
+});
+
+function initCatPills() {
+  const el = document.getElementById("catPills");
+  ["All", ...CATEGORIES].forEach(c => {
+    const p = document.createElement("div");
+    p.className = "cat-pill" + (c === activeCat ? " active" : "") + (c === "Slang 🔥" ? " slang-pill" : "");
+    p.textContent = c;
+    p.onclick = () => {
+      activeCat = c;
+      document.querySelectorAll(".cat-pill").forEach(x => x.classList.remove("active"));
+      p.classList.add("active");
+      renderPhrases();
+    };
+    el.appendChild(p);
+  });
+}
+
+function makeCard(p, container) {
+  const card = document.createElement("div");
+  card.className = "phrase-card" + (p.slang ? " slang-card" : "");
+  const faved = isFav(p.ro);
+  const safeRo = (p.ro||"").replace(/'/g,"\\'");
+  card.innerHTML = `
+    <div class="card-top">
+      <div class="card-text">
+        ${p.slang ? '<div class="slang-badge">slang</div>' : ""}
+        <div class="ro-text">${p.ro}</div>
+        <div class="en-text">${p.en}</div>
+        <div class="ph-text">${p.ph}</div>
+      </div>
+      <button class="fav-btn${faved?" active":""}">♥</button>
+    </div>
+    <div class="card-actions">
+      <button class="audio-btn">▶ Play</button>
+    </div>`;
+  const fb = card.querySelector(".fav-btn");
+  fb.onclick = () => { toggleFav(p); fb.classList.toggle("active", isFav(p.ro)); };
+  card.querySelector(".audio-btn").onclick = () => speak(p.ro);
+  container.appendChild(card);
+}
+
+function renderPhrases() {
+  const q = document.getElementById("search").value.toLowerCase();
+  const list = document.getElementById("phraseList");
+  list.innerHTML = "";
+  const cats = activeCat === "All" ? CATEGORIES : [activeCat];
+  let count = 0;
+  cats.forEach(c => {
+    PHRASES[c].filter(p => !q || p.ro.toLowerCase().includes(q) || p.en.toLowerCase().includes(q) || (p.ph||"").toLowerCase().includes(q)).forEach(p => {
+      count++; makeCard(p, list);
+    });
+  });
+  if (!count) list.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div>No phrases found</div>';
+}
+
+function renderFavorites() {
+  const q = (document.getElementById("favSearch").value||"").toLowerCase();
+  const list = document.getElementById("favList");
+  list.innerHTML = "";
+  if (!favorites.length) {
+    list.innerHTML = '<div class="empty-state"><div class="empty-icon">♡</div>No saved phrases yet.<br>Tap ♥ on any phrase to save it here.</div>';
+    return;
+  }
+  favorites.filter(p => !q || p.ro.toLowerCase().includes(q) || p.en.toLowerCase().includes(q)).forEach(p => makeCard(p, list));
+}
+
+async function askAI() {
+  const input = document.getElementById("aiInput");
+  const btn = document.getElementById("aiBtn");
+  const result = document.getElementById("aiResult");
+  const q = input.value.trim();
+  if (!q) return;
+  const apiKey = getApiKey();
+  if (!apiKey) { showApiScreen(); return; }
+  btn.disabled = true; btn.textContent = "...";
+  result.style.display = "block";
+  result.innerHTML = '<div style="text-align:center;padding:10px"><div class="spinner"></div></div>';
+  try {
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST", headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-20250514", max_tokens:1000,
+        system:`You are a Romanian language helper for a beginner English speaker who hangs out socially with Romanian speakers. Include slang where appropriate. Return ONLY valid JSON: {"ro":"...","phonetic":"...","en":"...","example":"...","tip":"...or null","isSlang":true/false}. No markdown, no extra text.`,
+        messages:[{role:"user",content:q}]
+      })
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(()=>({}));
+      if (resp.status===401) { result.innerHTML='<div style="color:var(--red);font-size:13px;padding:4px">Invalid API key. Tap ⚙️ to update it.</div>'; return; }
+      result.innerHTML=`<div style="color:var(--text2);font-size:13px;padding:4px">Error ${resp.status}: ${err.error?.message||"Unknown error"}</div>`; return;
+    }
+    const d = await resp.json();
+    const text = d.content.map(i=>i.text||"").join("");
+    let p; try { p = JSON.parse(text.replace(/```json|```/g,"").trim()); } catch(e) { result.innerHTML=`<div>${text}</div>`; return; }
+    const safeRo = (p.ro||"").replace(/'/g,"\\'");
+    result.innerHTML = `
+      <div class="card-top" style="margin-bottom:8px">
+        <div class="card-text">
+          ${p.isSlang?'<div class="slang-badge">slang</div>':""}
+          <div class="ro-big">${p.ro}</div>
+          <div class="ai-ph">${p.phonetic}</div>
+          <div class="ai-en">${p.en}</div>
+          ${p.example?`<div class="ai-ex">e.g. ${p.example}</div>`:""}
+          ${p.tip?`<div class="ai-tip">💡 ${p.tip}</div>`:""}
+        </div>
+        <button class="fav-btn" id="aiFavBtn">♥</button>
+      </div>
+      <div class="card-actions">
+        <button class="audio-btn" onclick="speak('${safeRo}')">▶ Play</button>
+      </div>`;
+    const fb = document.getElementById("aiFavBtn");
+    if (isFav(p.ro)) fb.classList.add("active");
+    fb.onclick = () => { toggleFav({ro:p.ro,en:p.en,ph:p.phonetic}); fb.classList.toggle("active",isFav(p.ro)); };
+  } catch(e) {
+    result.innerHTML = `<div style="color:var(--text2);font-size:13px;padding:4px">Error: ${e.message||e}</div>`;
+  }
+  btn.disabled = false; btn.textContent = "Ask";
+}
+
+function initContextChips() {
+  const el = document.getElementById("quickChips");
+  QUICK_SCENARIOS.forEach(s => {
+    const chip = document.createElement("div");
+    chip.className = "quick-chip";
+    chip.textContent = s;
+    chip.onclick = () => {
+      document.querySelectorAll(".quick-chip").forEach(x=>x.classList.remove("selected"));
+      chip.classList.add("selected");
+      document.getElementById("contextInput").value = s;
+    };
+    el.appendChild(chip);
+  });
+}
+
+async function runContext() {
+  const input = document.getElementById("contextInput");
+  const btn = document.getElementById("contextBtn");
+  const result = document.getElementById("contextResult");
+  const q = input.value.trim();
+  if (!q) return;
+  const apiKey = getApiKey();
+  if (!apiKey) { showApiScreen(); return; }
+  btn.disabled = true; btn.textContent = "Getting phrases...";
+  result.innerHTML = '<div style="text-align:center;padding:24px"><div class="spinner"></div></div>';
+  try {
+    const allP = JSON.stringify(ALL_PHRASES.map(p=>({ro:p.ro,en:p.en,ph:p.ph,slang:!!p.slang})));
+    const resp = await fetch("https://api.anthropic.com/v1/messages", {
+      method:"POST", headers:{"Content-Type":"application/json","x-api-key":apiKey,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},
+      body: JSON.stringify({
+        model:"claude-sonnet-4-20250514", max_tokens:1000,
+        system:`You are a Romanian language helper. Given a social situation, pick the 5-6 most useful phrases from the list (include slang when it fits), and optionally add 1-2 new ones specific to the situation. Return ONLY valid JSON array: [{"ro":"...","en":"...","ph":"...","note":"short tip or null","slang":true/false}]. No markdown.`,
+        messages:[{role:"user",content:`Situation: "${q}"\n\nAvailable phrases: ${allP}`}]
+      })
+    });
+    if (!resp.ok) {
+      const err = await resp.json().catch(()=>({}));
+      result.innerHTML=`<div class="empty-state">Error ${resp.status}: ${err.error?.message||"Check your API key (⚙️)"}</div>`; return;
+    }
+    const d = await resp.json();
+    const text = d.content.map(i=>i.text||"").join("");
+    let phrases; try { phrases = JSON.parse(text.replace(/```json|```/g,"").trim()); } catch(e) { result.innerHTML='<div class="empty-state">Could not parse. Try again.</div>'; return; }
+    result.innerHTML = `<div class="context-result-label">For: ${q}</div>`;
+    phrases.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "phrase-card" + (p.slang ? " slang-card" : "");
+      const safeRo = (p.ro||"").replace(/'/g,"\\'");
+      card.innerHTML = `
+        <div class="card-top">
+          <div class="card-text">
+            ${p.slang?'<div class="slang-badge">slang</div>':""}
+            <div class="ro-text">${p.ro}</div>
+            <div class="en-text">${p.en}</div>
+            <div class="ph-text">${p.ph}</div>
+            ${p.note?`<div style="font-size:12px;color:var(--text3);margin-top:5px;font-style:italic">💡 ${p.note}</div>`:""}
+          </div>
+          <button class="fav-btn${isFav(p.ro)?" active":""}">♥</button>
+        </div>
+        <div class="card-actions"><button class="audio-btn">▶ Play</button></div>`;
+      const fb = card.querySelector(".fav-btn");
+      fb.onclick = () => { toggleFav({ro:p.ro,en:p.en,ph:p.ph}); fb.classList.toggle("active",isFav(p.ro)); };
+      card.querySelector(".audio-btn").onclick = () => speak(p.ro);
+      result.appendChild(card);
+    });
+  } catch(e) {
+    result.innerHTML = '<div class="empty-state">Something went wrong. Check your connection.</div>';
+  }
+  btn.disabled = false; btn.textContent = "Get my phrases →";
+}
+
+function initQuiz() {
+  quizPool = [...ALL_PHRASES].sort(()=>Math.random()-0.5);
+  quizIndex = 0; quizScore = 0; renderQuiz();
+}
+
+function renderQuiz() {
+  const wrap = document.getElementById("quizWrap");
+  if (quizIndex >= quizPool.length) {
+    const pct = Math.round((quizScore/quizPool.length)*100);
+    const emoji = pct>=80?"🎉":pct>=50?"💪":"📚";
+    const msg = pct>=80?"You're killing it! Mișto!":pct>=50?"Getting there — hai!":"Keep going — merge!";
+    wrap.innerHTML = `
+      <div class="quiz-done">
+        <div style="font-size:44px;margin-bottom:8px">${emoji}</div>
+        <div class="score-big">${pct}%</div>
+        <div class="score-label">${quizScore} of ${quizPool.length} correct</div>
+        <div class="score-sub">${msg}</div>
+        <button class="quiz-restart-btn" onclick="initQuiz()">Play again</button>
+      </div>`;
+    return;
+  }
+  const cur = quizPool[quizIndex];
+  const wrong = ALL_PHRASES.filter(p=>p.ro!==cur.ro).sort(()=>Math.random()-0.5).slice(0,3);
+  const opts = [...wrong,cur].sort(()=>Math.random()-0.5);
+  const prog = ((quizIndex/quizPool.length)*100).toFixed(0);
+  const isRtoE = quizMode==="ro-to-en";
+  wrap.innerHTML = `
+    <div class="quiz-header">
+      <div class="quiz-counter">${quizIndex+1} / ${quizPool.length}</div>
+      <div class="quiz-score-pill">Score: ${quizScore}</div>
+    </div>
+    <div class="quiz-progress"><div class="quiz-bar" style="width:${prog}%"></div></div>
+    <div class="quiz-mode-btns">
+      <button class="quiz-mode-btn${quizMode==="ro-to-en"?" active":""}" onclick="quizMode='ro-to-en';initQuiz()">Romanian → English</button>
+      <button class="quiz-mode-btn${quizMode==="en-to-ro"?" active":""}" onclick="quizMode='en-to-ro';initQuiz()">English → Romanian</button>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-q">${isRtoE?cur.ro:cur.en}</div>
+      ${isRtoE&&cur.ph?`<div class="quiz-ph">${cur.ph}</div>`:""}
+      ${!isRtoE?'<div class="quiz-hint">What\'s the Romanian?</div>':""}
+    </div>
+    <div class="quiz-options">
+      ${opts.map(o=>{
+        const val=(isRtoE?o.en:o.ro).replace(/'/g,"\\'");
+        const correct=(isRtoE?cur.en:cur.ro).replace(/'/g,"\\'");
+        return `<button class="quiz-opt" onclick="checkAnswer(this,'${val}','${correct}')">${isRtoE?o.en:o.ro}</button>`;
+      }).join("")}
+    </div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <button class="quiz-next-btn" id="quizNext" onclick="quizIndex++;renderQuiz()">Next →</button>`;
+}
+
+function checkAnswer(btn, chosen, correct) {
+  if (document.getElementById("quizNext").style.display==="block") return;
+  document.querySelectorAll(".quiz-opt").forEach(b=>b.disabled=true);
+  const cur = quizPool[quizIndex];
+  const fb = document.getElementById("quizFeedback");
+  if (chosen===correct) {
+    btn.classList.add("correct"); quizScore++;
+    fb.textContent="✓ Tare! Correct!"; fb.style.color="#22c55e";
+  } else {
+    btn.classList.add("wrong");
+    document.querySelectorAll(".quiz-opt").forEach(b=>{if(b.textContent.trim()===correct)b.classList.add("correct");});
+    fb.textContent="✗ " + (quizMode==="ro-to-en"?cur.en:cur.ro);
+    fb.style.color="var(--red)";
+  }
+  document.getElementById("quizNext").style.display="block";
+}
+
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang="ro-RO"; u.rate=0.85;
+  window.speechSynthesis.speak(u);
+}
+
+function getApiKey() { try { return localStorage.getItem("ro_api_key") || ""; } catch(e) { return ""; } }
+
+function saveApiKey() {
+  const val = document.getElementById("apiKeyInput").value.trim();
+  const err = document.getElementById("apiError");
+  if (!val.startsWith("sk-ant-")) { err.textContent = "Key should start with sk-ant-"; return; }
+  try { localStorage.setItem("ro_api_key", val); } catch(e) {}
+  document.getElementById("apiScreen").classList.add("hidden");
+  err.textContent = "";
+}
+
+function showApiScreen() {
+  const screen = document.getElementById("apiScreen");
+  screen.classList.remove("hidden");
+  const existing = getApiKey();
+  if (existing) document.getElementById("apiKeyInput").value = existing;
+}
+
+function checkApiKey() {
+  if (!getApiKey()) showApiScreen();
+}
+
+function toggleAI() {
+  const body = document.getElementById("aiBody");
+  const arrow = document.getElementById("aiArrow");
+  body.classList.toggle("open");
+  arrow.classList.toggle("open");
+}
+
+if (window.navigator.standalone) document.getElementById("installBanner").style.display="none";
+checkApiKey();
+initCatPills();
+initContextChips();
+renderPhrases();
+updateFavBadge();
+</script>
+</body>
+</html>
