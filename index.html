@@ -52,15 +52,10 @@
   }
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html { height: 100%; }
-body {
-  height: 100dvh;
-  overflow: hidden;
+html, body {
   font-family: 'Outfit', -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text);
-  display: flex;
-  flex-direction: column;
   max-width: 480px;
   margin: 0 auto;
 }
@@ -68,8 +63,8 @@ body {
 .header {
   background: var(--blue);
   padding: calc(var(--safe-top) + 10px) 16px 0;
-  flex-shrink: 0;
-  position: relative;
+  position: sticky; top: 0; z-index: 100;
+  position: -webkit-sticky;
   overflow: hidden;
 }
 .header-stripe { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; display: flex; }
@@ -82,9 +77,11 @@ body {
 
 .nav {
   background: var(--blue);
-  display: flex; flex-shrink: 0;
+  display: flex;
   overflow-x: auto; scrollbar-width: none;
   padding: 0 6px; gap: 2px;
+  position: sticky; top: 56px; z-index: 99;
+  position: -webkit-sticky;
 }
 .nav::-webkit-scrollbar { display: none; }
 .nav-tab {
@@ -99,9 +96,9 @@ body {
 .nav-tab.active { color: var(--gold); border-bottom-color: var(--gold); }
 .nav-tab.red-tab.active { color: #ff8096; border-bottom-color: #ff8096; }
 
-.screen { display: none; flex-direction: column; flex: 1; overflow: hidden; min-height: 0; }
+.screen { display: none; flex-direction: column; }
 .screen.active { display: flex; }
-.scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 12px; padding-bottom: calc(var(--safe-bottom) + 80px); min-height: 0; }
+.scroll-area { padding: 12px; padding-bottom: calc(var(--safe-bottom) + 100px); }
 
 .search-wrap { padding: 10px 12px 4px; flex-shrink: 0; }
 .search-input {
@@ -183,9 +180,10 @@ body {
 .empty-icon { font-size: 40px; margin-bottom: 12px; }
 
 .ai-wrap {
-  padding: 0 12px calc(var(--safe-bottom) + 8px);
-  flex-shrink: 0; border-top: 3px solid var(--gold);
+  padding: 0 12px 16px;
+  border-top: 3px solid var(--gold);
   background: var(--surface);
+  margin-top: 4px;
 }
 .ai-toggle {
   width: 100%; padding: 9px 0; display: flex; align-items: center;
