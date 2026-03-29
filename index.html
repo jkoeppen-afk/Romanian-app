@@ -444,6 +444,7 @@ html, body {
   <div class="nav-tab active" data-screen="phrasebook">📖 Phrases</div>
   <div class="nav-tab" data-screen="context">🎯 Before You Go</div>
   <div class="nav-tab" data-screen="quiz">🧠 Quiz</div>
+  <div class="nav-tab" data-screen="ai">⚡ AI Lookup</div>
   <div class="nav-tab red-tab" data-screen="favorites">♥ Saved <span id="favNavCount"></span></div>
 </div>
 
@@ -454,13 +455,17 @@ html, body {
   </div>
   <div class="cat-pills" id="catPills"></div>
   <div class="scroll-area" id="phraseList"></div>
-  <div class="ai-wrap">
-    <button class="ai-toggle" onclick="toggleAI()">
-      <span class="ai-toggle-label">⚡ AI Lookup — ask anything</span>
-      <span class="ai-toggle-arrow" id="aiArrow">▲</span>
-    </button>
-    <div class="ai-body" id="aiBody">
-      <div class="ai-row">
+</div>
+
+<!-- AI LOOKUP -->
+<div class="screen" id="screen-ai">
+  <div class="scroll-area">
+    <div style="padding:4px">
+      <div class="context-hero">
+        <h2>Ask <span>anything</span></h2>
+        <p>Type in English — get the Romanian, pronunciation, and a usage example.</p>
+      </div>
+      <div class="ai-row" style="margin-bottom:10px">
         <input type="text" id="aiInput" placeholder='e.g. "How do I say no way?"' onkeydown="if(event.key==='Enter')askAI()"/>
         <button class="ai-ask-btn" id="aiBtn" onclick="askAI()">Ask</button>
       </div>
@@ -602,6 +607,7 @@ document.querySelectorAll(".nav-tab").forEach(t => {
     document.getElementById("screen-" + t.dataset.screen).classList.add("active");
     if (t.dataset.screen === "quiz") initQuiz();
     if (t.dataset.screen === "favorites") renderFavorites();
+    window.scrollTo(0, 0);
   });
 });
 
