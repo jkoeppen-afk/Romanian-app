@@ -385,12 +385,16 @@ body {
 .api-help { font-size: 12px; color: rgba(255,255,255,0.4); text-align: center; line-height: 1.6; }
 .api-help a { color: var(--gold); text-decoration: none; }
 .api-error { font-size: 13px; color: #ff8096; margin-bottom: 10px; text-align: center; min-height: 18px; }
+.api-save-confirm { font-size: 13px; color: #4ade80; margin-bottom: 10px; text-align: center; font-weight: 700; display: none; }
+.api-save-confirm.show { display: block; }
 .settings-btn {
   position: absolute; top: calc(var(--safe-top) + 8px); right: 12px;
   background: none; border: none; font-size: 18px; cursor: pointer;
   color: rgba(255,255,255,0.5); padding: 6px;
 }
 .settings-btn:active { color: var(--gold); }
+.install-banner {
+  background: var(--gold-light); color: var(--gold-dark);
   padding: 10px 16px; font-size: 12px; font-weight: 700;
   display: flex; align-items: center; justify-content: space-between;
   gap: 10px; flex-shrink: 0;
@@ -407,19 +411,20 @@ body {
 <div class="api-screen hidden" id="apiScreen">
   <div class="api-logo">🇷🇴</div>
   <div class="api-title">Hai, <span>vorbim!</span></div>
-  <div class="api-sub">Keys are saved to your device only and never shared.</div>
-  <div style="width:100%;margin-bottom:12px">
-    <div style="font-size:10px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:7px">Anthropic — AI features</div>
-    <input class="api-key-input" id="apiKeyInput" type="password" placeholder="sk-ant-..." />
-    <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:5px">AI Lookup &amp; Before You Go · <a href="https://console.anthropic.com" target="_blank" style="color:var(--gold)">console.anthropic.com</a></div>
+  <div class="api-sub">Enter your Anthropic key for AI Lookup and Before You Go. Add an ElevenLabs key too for real Romanian voice audio — both save to your phone and are never shared.</div>
+  <div class="api-input-wrap">
+    <input class="api-key-input" id="apiKeyInput" type="password" placeholder="Anthropic key: sk-ant-..." autocapitalize="off" autocorrect="off" />
   </div>
-  <div style="width:100%;margin-bottom:16px">
-    <div style="font-size:10px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.1em;font-weight:800;margin-bottom:7px">ElevenLabs — natural voice &nbsp;<span style="color:var(--gold);font-size:9px">OPTIONAL</span></div>
-    <input class="api-key-input" id="elKeyInput" type="password" placeholder="sk_..." />
-    <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:5px">Real Romanian audio · free tier at <a href="https://elevenlabs.io" target="_blank" style="color:var(--gold)">elevenlabs.io</a></div>
+  <div class="api-input-wrap">
+    <input class="api-key-input" id="elevenKeyInput" type="password" placeholder="ElevenLabs key (optional, for real voice)" autocapitalize="off" autocorrect="off" />
   </div>
   <div class="api-error" id="apiError"></div>
+  <div class="api-save-confirm" id="apiSaveConfirm">✓ Keys saved!</div>
   <button class="api-save-btn" onclick="saveApiKey()">Save & Continue →</button>
+  <div class="api-help">
+    Anthropic: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> → API Keys<br/>
+    ElevenLabs: <a href="https://elevenlabs.io" target="_blank">elevenlabs.io</a> → Profile → API Keys
+  </div>
 </div>
 
 <div class="install-banner" id="installBanner">
@@ -522,22 +527,22 @@ const PHRASES = {
     {ro:"Poftă bună!",en:"Enjoy your meal!",ph:"POF-tuh BOO-nuh"},
     {ro:"Un pahar de vin, vă rog",en:"A glass of wine, please",ph:"oon pah-HAR deh veen, vuh ROG"},
     {ro:"O bere, vă rog",en:"A beer, please",ph:"oh BEH-reh, vuh ROG"},
-    {ro:"Este delicios",en:"It's delicious",ph:"EH-steh deh-lee-CHOHS"},
+    {ro:"Este delicios",en:"It's delicious",ph:"YES-teh deh-lee-CHOS"},
     {ro:"Mulțumesc",en:"Thank you",ph:"mool-tsoo-MESK"},
     {ro:"Vă rog",en:"Please",ph:"vuh ROG"},
     {ro:"Nota de plată",en:"The bill / check",ph:"NOH-tah deh PLAH-tuh"},
     {ro:"Apă, vă rog",en:"Water, please",ph:"AH-puh, vuh ROG"},
     {ro:"Fără...",en:"Without... (allergy/preference)",ph:"FUH-ruh"},
     {ro:"Să bem!",en:"Let's drink!",ph:"suh bem"},
-    {ro:"Mai bei ceva?",en:"Want another drink?",ph:"my bay CHEH-vah"},
+    {ro:"Mai bei ceva?",en:"Want another drink?",ph:"my bay cheh-VAH"},
   ],
   "Social": [
-    {ro:"La mulți ani!",en:"Happy birthday / Congratulations!",ph:"lah MOOL-tsee AHN-ee"},
+    {ro:"La mulți ani!",en:"Happy birthday / Congratulations!",ph:"lah MOOL-ts ahn"},
     {ro:"Sănătate!",en:"To your health! (toast)",ph:"suh-nuh-TAH-teh"},
     {ro:"Distracție plăcută",en:"Have fun!",ph:"dees-TRAK-tsee-eh pluh-KOO-tuh"},
     {ro:"Ești din România?",en:"Are you from Romania?",ph:"yesht deen ro-MUH-nee-ah"},
     {ro:"Nu înțeleg",en:"I don't understand",ph:"noo een-TSEH-leg"},
-    {ro:"Vorbiți engleza?",en:"Do you speak English?",ph:"vor-BEE-tsee eng-LEH-zah"},
+    {ro:"Vorbiți engleza?",en:"Do you speak English?",ph:"vor-BEETS eng-LEH-zah"},
     {ro:"Poți repeta?",en:"Can you repeat that?",ph:"pots reh-peh-TAH"},
     {ro:"Îmi pare rău",en:"I'm sorry",ph:"eem PAH-reh ruh-OO"},
     {ro:"Încerc să învăț româna",en:"I'm trying to learn Romanian",ph:"een-CHERK suh een-VUHTS ro-MUH-nah"},
@@ -628,7 +633,6 @@ function makeCard(p, container) {
   const card = document.createElement("div");
   card.className = "phrase-card" + (p.slang ? " slang-card" : "");
   const faved = isFav(p.ro);
-  const safeRo = (p.ro||"").replace(/'/g,"\\'");
   card.innerHTML = `
     <div class="card-top">
       <div class="card-text">
@@ -641,10 +645,14 @@ function makeCard(p, container) {
     </div>
     <div class="card-actions">
       <button class="audio-btn">▶ Play</button>
+      <button class="audio-btn slow-btn" title="Slow playback">🐢 Slow</button>
     </div>`;
   const fb = card.querySelector(".fav-btn");
   fb.onclick = () => { toggleFav(p); fb.classList.toggle("active", isFav(p.ro)); };
-  card.querySelector(".audio-btn").onclick = function() { speak(p.ro, this); };
+  const ab = card.querySelector(".audio-btn:not(.slow-btn)");
+  ab.onclick = () => speak(p.ro, ab, false);
+  const sb = card.querySelector(".slow-btn");
+  sb.onclick = () => speak(p.ro, sb, true);
   container.appendChild(card);
 }
 
@@ -701,7 +709,6 @@ async function askAI() {
     const d = await resp.json();
     const text = d.content.map(i=>i.text||"").join("");
     let p; try { p = JSON.parse(text.replace(/```json|```/g,"").trim()); } catch(e) { result.innerHTML=`<div>${text}</div>`; return; }
-    const safeRo = (p.ro||"").replace(/'/g,"\\'");
     result.innerHTML = `
       <div class="card-top" style="margin-bottom:8px">
         <div class="card-text">
@@ -715,8 +722,13 @@ async function askAI() {
         <button class="fav-btn" id="aiFavBtn">♥</button>
       </div>
       <div class="card-actions">
-        <button class="audio-btn" onclick="speak('${safeRo}', this)">▶ Play</button>
+        <button class="audio-btn" id="aiPlayBtn">▶ Play</button>
+        <button class="audio-btn" id="aiSlowBtn">🐢 Slow</button>
       </div>`;
+    const apb = document.getElementById("aiPlayBtn");
+    apb.onclick = () => speak(p.ro, apb, false);
+    const asb = document.getElementById("aiSlowBtn");
+    asb.onclick = () => speak(p.ro, asb, true);
     const fb = document.getElementById("aiFavBtn");
     if (isFav(p.ro)) fb.classList.add("active");
     fb.onclick = () => { toggleFav({ro:p.ro,en:p.en,ph:p.phonetic}); fb.classList.toggle("active",isFav(p.ro)); };
@@ -772,7 +784,6 @@ async function runContext() {
     phrases.forEach(p => {
       const card = document.createElement("div");
       card.className = "phrase-card" + (p.slang ? " slang-card" : "");
-      const safeRo = (p.ro||"").replace(/'/g,"\\'");
       card.innerHTML = `
         <div class="card-top">
           <div class="card-text">
@@ -784,10 +795,16 @@ async function runContext() {
           </div>
           <button class="fav-btn${isFav(p.ro)?" active":""}">♥</button>
         </div>
-        <div class="card-actions"><button class="audio-btn">▶ Play</button></div>`;
+        <div class="card-actions">
+          <button class="audio-btn">▶ Play</button>
+          <button class="audio-btn slow-btn" title="Slow playback">🐢 Slow</button>
+        </div>`;
       const fb = card.querySelector(".fav-btn");
       fb.onclick = () => { toggleFav({ro:p.ro,en:p.en,ph:p.ph}); fb.classList.toggle("active",isFav(p.ro)); };
-      card.querySelector(".audio-btn").onclick = function() { speak(p.ro, this); };
+      const ab = card.querySelector(".audio-btn:not(.slow-btn)");
+      ab.onclick = () => speak(p.ro, ab, false);
+      const sb = card.querySelector(".slow-btn");
+      sb.onclick = () => speak(p.ro, sb, true);
       result.appendChild(card);
     });
   } catch(e) {
@@ -796,8 +813,13 @@ async function runContext() {
   btn.disabled = false; btn.textContent = "Get my phrases →";
 }
 
+const QUIZ_ROUND_SIZE = 10;
+
+function getBestScore() { try { return parseInt(localStorage.getItem("ro_best_score")||"0",10); } catch(e){ return 0; } }
+function setBestScore(s) { try { localStorage.setItem("ro_best_score", String(s)); } catch(e){} }
+
 function initQuiz() {
-  quizPool = [...ALL_PHRASES].sort(()=>Math.random()-0.5);
+  quizPool = [...ALL_PHRASES].sort(()=>Math.random()-0.5).slice(0, QUIZ_ROUND_SIZE);
   quizIndex = 0; quizScore = 0; renderQuiz();
 }
 
@@ -805,6 +827,9 @@ function renderQuiz() {
   const wrap = document.getElementById("quizWrap");
   if (quizIndex >= quizPool.length) {
     const pct = Math.round((quizScore/quizPool.length)*100);
+    const best = getBestScore();
+    const isNewBest = pct > best;
+    if (isNewBest) setBestScore(pct);
     const emoji = pct>=80?"🎉":pct>=50?"💪":"📚";
     const msg = pct>=80?"You're killing it! Mișto!":pct>=50?"Getting there — hai!":"Keep going — merge!";
     wrap.innerHTML = `
@@ -812,8 +837,8 @@ function renderQuiz() {
         <div style="font-size:44px;margin-bottom:8px">${emoji}</div>
         <div class="score-big">${pct}%</div>
         <div class="score-label">${quizScore} of ${quizPool.length} correct</div>
-        <div class="score-sub">${msg}</div>
-        <button class="quiz-restart-btn" onclick="initQuiz()">Play again</button>
+        <div class="score-sub">${isNewBest ? "🏆 New personal best!" : "Best: " + Math.max(best,pct) + "%"} · ${msg}</div>
+        <button class="quiz-restart-btn" onclick="initQuiz()">New round</button>
       </div>`;
     return;
   }
@@ -837,94 +862,140 @@ function renderQuiz() {
       ${isRtoE&&cur.ph?`<div class="quiz-ph">${cur.ph}</div>`:""}
       ${!isRtoE?'<div class="quiz-hint">What\'s the Romanian?</div>':""}
     </div>
-    <div class="quiz-options">
-      ${opts.map(o=>{
-        const val=(isRtoE?o.en:o.ro).replace(/'/g,"\\'");
-        const correct=(isRtoE?cur.en:cur.ro).replace(/'/g,"\\'");
-        return `<button class="quiz-opt" onclick="checkAnswer(this,'${val}','${correct}')">${isRtoE?o.en:o.ro}</button>`;
-      }).join("")}
-    </div>
+    <div class="quiz-options" id="quizOptions"></div>
     <div class="quiz-feedback" id="quizFeedback"></div>
     <button class="quiz-next-btn" id="quizNext" onclick="quizIndex++;renderQuiz()">Next →</button>`;
+  const optWrap = document.getElementById("quizOptions");
+  opts.forEach(o => {
+    const b = document.createElement("button");
+    b.className = "quiz-opt";
+    b.textContent = isRtoE ? o.en : o.ro;
+    b.onclick = () => checkAnswer(b, o.ro === cur.ro, cur);
+    optWrap.appendChild(b);
+  });
 }
 
-function checkAnswer(btn, chosen, correct) {
+function checkAnswer(btn, isCorrect, cur) {
   if (document.getElementById("quizNext").style.display==="block") return;
-  document.querySelectorAll(".quiz-opt").forEach(b=>b.disabled=true);
-  const cur = quizPool[quizIndex];
+  const allOpts = document.querySelectorAll(".quiz-opt");
+  allOpts.forEach(b=>b.disabled=true);
   const fb = document.getElementById("quizFeedback");
-  if (chosen===correct) {
+  const correctText = quizMode==="ro-to-en" ? cur.en : cur.ro;
+  if (isCorrect) {
     btn.classList.add("correct"); quizScore++;
     fb.textContent="✓ Tare! Correct!"; fb.style.color="#22c55e";
   } else {
     btn.classList.add("wrong");
-    document.querySelectorAll(".quiz-opt").forEach(b=>{if(b.textContent.trim()===correct)b.classList.add("correct");});
-    fb.textContent="✗ " + (quizMode==="ro-to-en"?cur.en:cur.ro);
+    allOpts.forEach(b=>{ if(b.textContent===correctText) b.classList.add("correct"); });
+    fb.textContent="✗ " + correctText;
     fb.style.color="var(--red)";
   }
+  speak(cur.ro, null, false);
   document.getElementById("quizNext").style.display="block";
 }
 
-async function speak(text, btn) {
-  const elKey = getElKey();
-  if (elKey) {
-    if (btn) { btn.textContent = "⏳"; btn.disabled = true; }
-    try {
-      const resp = await fetch("https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM", {
+const ELEVEN_VOICE_ID = "21m00Tcm4TlvDq8ikWAM"; // multilingual voice, works well for Romanian
+const audioCache = new Map(); // text -> blob URL, so replays don't cost ElevenLabs credits
+
+function speakWebFallback(text, slow) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang="ro-RO"; u.rate = slow ? 0.55 : 0.85;
+  window.speechSynthesis.speak(u);
+}
+
+async function speak(text, btnEl, slow) {
+  const elevenKey = getElevenKey();
+  const origLabel = btnEl ? btnEl.textContent : null;
+
+  if (!elevenKey) {
+    console.log("[TTS] No ElevenLabs key saved — using Web Speech API for:", text);
+    speakWebFallback(text, slow);
+    return;
+  }
+
+  try {
+    let url = audioCache.get(text);
+    if (!url) {
+      if (btnEl) { btnEl.disabled = true; btnEl.textContent = "⏳"; }
+      console.log("[TTS] Calling ElevenLabs for:", text);
+      const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "xi-api-key": elKey },
+        headers: {
+          "xi-api-key": elevenKey,
+          "Content-Type": "application/json",
+          "Accept": "audio/mpeg"
+        },
         body: JSON.stringify({
-          text,
+          text: text,
           model_id: "eleven_multilingual_v2",
           voice_settings: { stability: 0.5, similarity_boost: 0.75 }
         })
       });
-      if (resp.ok) {
-        const blob = await resp.blob();
-        const url = URL.createObjectURL(blob);
-        const audio = new Audio(url);
-        audio.play();
-        audio.onended = () => URL.revokeObjectURL(url);
-        if (btn) { btn.textContent = "▶ Play"; btn.disabled = false; }
-        return;
+      console.log("[TTS] ElevenLabs response status:", resp.status);
+      if (!resp.ok) {
+        const errBody = await resp.text().catch(()=> "");
+        console.error("[TTS] ElevenLabs error body:", errBody);
+        throw new Error("ElevenLabs request failed: " + resp.status);
       }
-    } catch(e) {}
-    if (btn) { btn.textContent = "▶ Play"; btn.disabled = false; }
+      const blob = await resp.blob();
+      url = URL.createObjectURL(blob);
+      audioCache.set(text, url);
+    } else {
+      console.log("[TTS] Playing from cache:", text);
+    }
+    const audio = new Audio(url);
+    audio.playbackRate = slow ? 0.7 : 1.0;
+    await audio.play();
+  } catch (e) {
+    console.error("[TTS] ElevenLabs failed, falling back to Web Speech:", e);
+    speakWebFallback(text, slow);
+  } finally {
+    if (btnEl) { btnEl.disabled = false; btnEl.textContent = origLabel; }
   }
-  if (!window.speechSynthesis) return;
-  const doSpeak = () => {
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    const roVoice = voices.find(v => v.lang === 'ro-RO') || voices.find(v => v.lang.startsWith('ro'));
-    if (roVoice) u.voice = roVoice;
-    u.lang = "ro-RO"; u.rate = 0.85;
-    window.speechSynthesis.speak(u);
-  };
-  if (window.speechSynthesis.getVoices().length > 0) doSpeak();
-  else { window.speechSynthesis.onvoiceschanged = () => { doSpeak(); window.speechSynthesis.onvoiceschanged = null; }; }
 }
 
 function getApiKey() { try { return localStorage.getItem("ro_api_key") || ""; } catch(e) { return ""; } }
-function getElKey() { try { return localStorage.getItem("ro_el_key") || ""; } catch(e) { return ""; } }
+function getElevenKey() { try { return localStorage.getItem("ro_eleven_key") || ""; } catch(e) { return ""; } }
 
 function saveApiKey() {
   const val = document.getElementById("apiKeyInput").value.trim();
-  const elVal = document.getElementById("elKeyInput").value.trim();
+  const elevenVal = document.getElementById("elevenKeyInput").value.trim();
   const err = document.getElementById("apiError");
-  if (!val.startsWith("sk-ant-")) { err.textContent = "Anthropic key should start with sk-ant-"; return; }
-  try { localStorage.setItem("ro_api_key", val); } catch(e) {}
-  if (elVal) { try { localStorage.setItem("ro_el_key", elVal); } catch(e) {} }
-  document.getElementById("apiScreen").classList.add("hidden");
+  const confirm = document.getElementById("apiSaveConfirm");
+  confirm.classList.remove("show");
+
+  if (!val || !val.startsWith("sk-ant-")) {
+    err.textContent = "Anthropic key should start with sk-ant-";
+    return;
+  }
   err.textContent = "";
+
+  try {
+    localStorage.setItem("ro_api_key", val);
+    if (elevenVal) localStorage.setItem("ro_eleven_key", elevenVal);
+    console.log("[Settings] Saved — Anthropic key:", !!val, "| ElevenLabs key:", !!elevenVal);
+  } catch(e) {
+    console.error("[Settings] Failed to save keys:", e);
+    err.textContent = "Couldn't save — storage may be blocked.";
+    return;
+  }
+
+  confirm.classList.add("show");
+  setTimeout(() => {
+    document.getElementById("apiScreen").classList.add("hidden");
+    confirm.classList.remove("show");
+  }, 800);
 }
 
 function showApiScreen() {
-  document.getElementById("apiScreen").classList.remove("hidden");
+  const screen = document.getElementById("apiScreen");
+  screen.classList.remove("hidden");
   const existing = getApiKey();
   if (existing) document.getElementById("apiKeyInput").value = existing;
-  const elExisting = getElKey();
-  if (elExisting) document.getElementById("elKeyInput").value = elExisting;
+  const existingEleven = getElevenKey();
+  if (existingEleven) document.getElementById("elevenKeyInput").value = existingEleven;
 }
 
 function checkApiKey() {
